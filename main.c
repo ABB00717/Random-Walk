@@ -10,9 +10,9 @@
 #define WIDTH 1920
 #define HEIGHT 1080
 
-const unsigned int LINE_COLORS[10] = {0x00FFFF, 0x39FF14, 0xFF3131, 0xFFFB00,
-                                      0xBC13FE, 0xFF66CC, 0xA5F2F3, 0xFF5E13,
-                                      0xFFFFFF, 0x00FFAB};
+const unsigned int LINE_COLORS[] = {0x9AC2B3, 0xC7B8EA, 0xB0BEC5, 0xFBC02D,
+                                    0xEF9A9A, 0x81C784, 0xA5D6A7, 0xDCE775,
+                                    0x90A4AE, 0xCCEEFF};
 
 void change_dir(int *x, int *y, int scale) {
     int dir = rand() % 4;
@@ -47,8 +47,8 @@ int main(int argc, char *argv[]) {
     int walker_number = atoi(argv[1]);
 
     SDL_Window *pwindow =
-        SDL_CreateWindow("Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                         WIDTH, HEIGHT, 0);
+        SDL_CreateWindow("Random Walker", SDL_WINDOWPOS_CENTERED,
+                         SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
     SDL_Surface *psurface = SDL_GetWindowSurface(pwindow);
 
     // Init walkers
@@ -57,8 +57,8 @@ int main(int argc, char *argv[]) {
         SDL_Rect *cur_walker = walkers + i;
         cur_walker->x = WIDTH / 2;
         cur_walker->y = HEIGHT / 2;
-        cur_walker->h = 1;
-        cur_walker->w = 1;
+        cur_walker->h = 5;
+        cur_walker->w = 5;
     }
 
     int scale = 5;
@@ -97,8 +97,8 @@ int main(int argc, char *argv[]) {
                 // Rotate different colors
                 unsigned int color = LINE_COLORS[iwalkers % 10];
                 SDL_FillRect(psurface, cur_walker, color);
-                SDL_UpdateWindowSurface(pwindow);
             }
         }
+        SDL_UpdateWindowSurface(pwindow);
     }
 }
