@@ -6,6 +6,8 @@ A simple random walker program written in C with SDL2.
 
 # Installation
 
+Install [SDL2](https://wiki.libsdl.org/SDL2/Installation) in advanced.
+
 ```bash
 make
 ```
