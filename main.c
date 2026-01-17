@@ -53,8 +53,30 @@ int main(int argc, char *argv[]) {
             if (event.type == SDL_QUIT) app_running = 0;
         }
 
-        change_dir(&rect.x, &rect.y, scale);
-        SDL_FillRect(psurface, &rect, 0xffffff);
-        SDL_UpdateWindowSurface(pwindow);
+        int dir = rand() % 4;
+
+        // Walk to dest pixel by pixel
+        for (int step = 0; step < scale; step++) {
+            switch (dir) {
+                case 0:
+                    rect.x += 1;
+                    break;
+                case 1:
+                    rect.x -= 1;
+                    break;
+                case 2:
+                    rect.y += 1;
+                    break;
+                case 3:
+                    rect.y -= 1;
+                    break;
+                default:
+                    fprintf(stderr, "Error: Unknown Dir\n");
+                    break;
+            }
+
+            SDL_FillRect(psurface, &rect, 0xffffff);
+            SDL_UpdateWindowSurface(pwindow);
+        }
     }
 }
