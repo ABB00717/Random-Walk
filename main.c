@@ -10,6 +10,10 @@
 #define WIDTH 1920
 #define HEIGHT 1080
 
+const unsigned int LINE_COLORS[10] = {0x00FFFF, 0x39FF14, 0xFF3131, 0xFFFB00,
+                                      0xBC13FE, 0xFF66CC, 0xA5F2F3, 0xFF5E13,
+                                      0xFFFFFF, 0x00FFAB};
+
 void change_dir(int *x, int *y, int scale) {
     int dir = rand() % 4;
 
@@ -40,9 +44,22 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    SDL_Window *pwindow = SDL_CreateWindow("Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
+    int walker_number = atoi(argv[1]);
+
+    SDL_Window *pwindow =
+        SDL_CreateWindow("Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                         WIDTH, HEIGHT, 0);
     SDL_Surface *psurface = SDL_GetWindowSurface(pwindow);
-    SDL_Rect rect = (SDL_Rect) {WIDTH/2, HEIGHT/2, 1, 1};
+
+    // Init walkers
+    SDL_Rect *walkers = malloc(sizeof(SDL_Rect) * walker_number);
+    for (int i = 0; i < walker_number; i++) {
+        SDL_Rect *cur_walker = walkers + i;
+        cur_walker->x = WIDTH / 2;
+        cur_walker->y = HEIGHT / 2;
+        cur_walker->h = 1;
+        cur_walker->w = 1;
+    }
 
     int scale = 5;
     int app_running = 1;
@@ -53,30 +70,35 @@ int main(int argc, char *argv[]) {
             if (event.type == SDL_QUIT) app_running = 0;
         }
 
-        int dir = rand() % 4;
+        for (int iwalkers = 0; iwalkers < walker_number; iwalkers++) {
+            SDL_Rect *cur_walker = walkers + iwalkers;
+            int dir = rand() % 4;
 
-        // Walk to dest pixel by pixel
-        for (int step = 0; step < scale; step++) {
-            switch (dir) {
-                case 0:
-                    rect.x += 1;
-                    break;
-                case 1:
-                    rect.x -= 1;
-                    break;
-                case 2:
-                    rect.y += 1;
-                    break;
-                case 3:
-                    rect.y -= 1;
-                    break;
-                default:
-                    fprintf(stderr, "Error: Unknown Dir\n");
-                    break;
+            // Walk to dest pixel by pixel
+            for (int step = 0; step < scale; step++) {
+                switch (dir) {
+                    case 0:
+                        cur_walker->x += 1;
+                        break;
+                    case 1:
+                        cur_walker->x -= 1;
+                        break;
+                    case 2:
+                        cur_walker->y += 1;
+                        break;
+                    case 3:
+                        cur_walker->y -= 1;
+                        break;
+                    default:
+                        fprintf(stderr, "Error: Unknown Dir\n");
+                        break;
+                }
+
+                // Rotate different colors
+                unsigned int color = LINE_COLORS[iwalkers % 10];
+                SDL_FillRect(psurface, cur_walker, color);
+                SDL_UpdateWindowSurface(pwindow);
             }
-
-            SDL_FillRect(psurface, &rect, 0xffffff);
-            SDL_UpdateWindowSurface(pwindow);
         }
     }
 }
