@@ -14,28 +14,6 @@ const unsigned int LINE_COLORS[] = {0x9AC2B3, 0xC7B8EA, 0xB0BEC5, 0xFBC02D,
                                     0xEF9A9A, 0x81C784, 0xA5D6A7, 0xDCE775,
                                     0x90A4AE, 0xCCEEFF};
 
-void change_dir(int *x, int *y, int scale) {
-    int dir = rand() % 4;
-
-    switch (dir) {
-        case 0:
-            *x += scale;
-            break;
-        case 1:
-            *x -= scale;
-            break;
-        case 2:
-            *y += scale;
-            break;
-        case 3:
-            *y -= scale;
-            break;
-        default:
-            fprintf(stderr, "Error: Unknown Dir\n");
-            break;
-    }
-}
-
 int main(int argc, char *argv[]) {
     srand(time(NULL));
 
